@@ -1,6 +1,7 @@
 import encoder
 import numpy as np
 import errorCorrection as decoder
+import generateField
 
 def main():
     n = 31
@@ -13,6 +14,7 @@ def main():
     codewordBlock = []
     extCount = 0
 
+    GF = generateField.field(field_n)
     for i in range(0, len(msg)):
         x = list(bin(ord(msg[i]))[2:])
         while len(x) < 7:
@@ -37,13 +39,11 @@ def main():
 
     for i in range(blockCount):
         sentBlock = np.transpose(codewordBlock[0: n]).tolist()
-        corrBlock = decoder.receiver(field_n, t, sentBlock)
-        if len(codewordBlock) > n:
-            codewordBlock = codewordBlock[n + 1: ]
+        corrBlock = decoder.receiver(field_n, t, GF,sentBlock)
 
         
         rcvMsg = []
-        for i in range(len(corrBlock) - extCount):
+        for i in range(len(corrBlock)):
             rcvMsg = rcvMsg + corrBlock[i][n - k: ]
         
 

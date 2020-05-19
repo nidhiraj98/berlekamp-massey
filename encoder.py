@@ -11,8 +11,8 @@ def encoder_31_11(info):
     for i in range(0, len(info)):
         msg.append(int(info[i]))
     # print(msg)
-    x_nk = [1] + [0 for _ in range(0, n - k)]
-    x = np.polymul(msg, x_nk)
+    x = msg + [0 for _ in range(0, n - k)]
+    # x = np.polymul(msg, x_nk)
     [q, rem] = np.polydiv(x, gen)
     for i in range(0, len(rem)):
         rem[i] = abs(rem[i] % 2)
@@ -20,9 +20,9 @@ def encoder_31_11(info):
         rem = np.flip(rem).tolist()
         while(len(rem) < n - k):
             rem.append(0)
-        rem = np.flip(rem)		
-    code_word = rem.astype(int).tolist() + msg
-    return code_word
+        rem = np.flip(rem)	
+    	
+    return rem.astype(int).tolist() + msg
 
 def encoder_51_19(info):
     n = 51

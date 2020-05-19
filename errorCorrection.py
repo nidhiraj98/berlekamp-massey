@@ -1,5 +1,5 @@
 import numpy as np
-import generateField
+# import generateField
 import fieldOperations as field
 
 # n = 5
@@ -7,11 +7,11 @@ import fieldOperations as field
 
 # r = [0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   #received vector
 
-def receiver(n, t, rcvBlock):
+def receiver(n, t, GF, rcvBlock):
     rcvBlock = np.transpose(rcvBlock).tolist()
     corrBlock = []
     # print("Here")
-    GF = generateField.field(n)
+    # GF = generateField.field(n)
     # print("GF Generated")
     for r in rcvBlock:
         # print(r)
