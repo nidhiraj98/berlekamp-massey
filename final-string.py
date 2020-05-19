@@ -24,9 +24,8 @@ def main():
     while len(info) % k != 0:
         info = info + [0]
     
-    while len(info) >= k:
-        msgBlock.append(info[0: k])
-        info = info[k:len(info)]
+    for i in range(0, len(info), k):
+        msgBlock.append(info[i: i+k])
 
     for m in msgBlock:
         codewordBlock.append(encoder.encoder_31_11(m))
@@ -50,13 +49,12 @@ def main():
         msgStr = ""
         zeros = [0 for _ in range(7)]
         charCount = int(len(rcvMsg)/ 7)
-        for i in range(charCount + 1):
-            x = rcvMsg[0: 7]
+        for i in range(0, charCount + 1, 7):
+            x = rcvMsg[i: i + 7]
             if x == zeros:
                 break
             x = [str(m) for m in x]
             msgStr = msgStr + chr(int("".join(x), 2))
-            rcvMsg = rcvMsg[7: ]
         print(msgStr)
             
 

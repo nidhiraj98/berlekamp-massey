@@ -49,12 +49,3 @@ def decode_img(encoded_string):
   img_decoded = np.reshape(img_flat_decoded,shape)
 
   return img_decoded
-
-# img = load_img('index.png')
-# # plt.imshow(img)
-# # plt.show() 
-# encoded_img = encode_img(img)
-# print(encoded_img)
-# img_dec = decode_img(encoded_img)
-# plt.imshow(img_dec)
-# plt.show()
