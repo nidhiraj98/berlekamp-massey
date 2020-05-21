@@ -27,14 +27,13 @@ def encoder_31_11(info):
 def encoder_51_19(info):
     n = 51
     k = 19
-    genLoc = [0, 2, 3, 4, 5, 6, 7, 9, 14, 16, 17, 19, 20, 22, 25, 26, 27, 29, 30, 31, 32]
+    genLoc = [0, 1, 3, 5, 6, 8, 9, 10, 11, 12, 14, 16, 19, 21, 24, 30, 32]
     gen = [0 for _ in range(n - k + 1)]
     for i in genLoc:
         gen[i] = 1
     msg = []
     for i in range(0, len(info)):
         msg.append(int(info[i]))
-    # print(msg)
     x_nk = [1] + [0 for _ in range(0, n - k)]
     x = np.polymul(msg, x_nk)
     [q, rem] = np.polydiv(x, gen)
@@ -51,14 +50,13 @@ def encoder_51_19(info):
 def encoder_51_27(info):
     n = 51
     k = 27
-    genLoc = [0, 2, 4, 5, 7, 8, 13, 15, 16, 17, 19, 20, 21, 23, 24]
+    genLoc = [0, 1, 5, 8, 9, 12, 13, 15, 17, 20, 21, 22, 24]
     gen = [0 for _ in range(n - k + 1)]
     for i in genLoc:
         gen[i] = 1
     msg = []
     for i in range(0, len(info)):
         msg.append(int(info[i]))
-    # print(msg)
     x_nk = [1] + [0 for _ in range(0, n - k)]
     x = np.polymul(msg, x_nk)
     [q, rem] = np.polydiv(x, gen)

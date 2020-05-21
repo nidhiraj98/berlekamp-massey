@@ -1,30 +1,24 @@
 import numpy as np
-# import generateField
 import fieldOperations as field
+import generateField
 
-# n = 5
-# t = 5   #Error Correcting Capability
-
-# r = [0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   #received vector
-
-def receiver(n, t, GF, rcvBlock):
+def receiver(n, length, t, GF, rcvBlock):
     rcvBlock = np.transpose(rcvBlock).tolist()
     corrBlock = []
-    # print("Here")
-    # GF = generateField.field(n)
-    # print("GF Generated")
     for r in rcvBlock:
         # print(r)
-        corrBlock.append(berlekamp(n, t, GF, r))
+        corrBlock.append(berlekamp(n, length, t, GF, r))
     return corrBlock
 
 
-def berlekamp(n, t, GF, r):
+def berlekamp(n, length, t, GF, r):
+    beta = int((2**n - 1)/length)
     syndromes = []
-    for i in range(2*t):
-        syndromes.append(field.computeSyndrome(GF, r, i + 1))
-    # print(syndromes)
+    for i in range(1, 2*t + 1):
+        syndromes.append(field.computeSyndrome(GF, n, r, i, beta))
+    
     d_1 = syndromes[0]
+    # print(syndromes)
 
     errLocTable = {
         'mu': [-0.5] + [i for i in range(0, t + 1)],
@@ -67,8 +61,9 @@ def berlekamp(n, t, GF, r):
             d ^= curr
         errLocTable['d'].append(d)
 
-
     errLocPoly = errLocTable['sigma'][t + 1]
+
+    # print(errLocPoly)
     if len(errLocPoly) - 1 <= t:
         errLocPoly.reverse()
         errLoc = []
@@ -77,10 +72,13 @@ def berlekamp(n, t, GF, r):
             for j in range(0, len(errLocPoly)):
                 sum ^= field.fieldMul(GF, errLocPoly[j], GF[(i * j) % (2**n - 1)])
             if sum == 0:
-                errLoc.append((2**n - 1) - i)
-
+                if i == 0:
+                    errLoc.append(1)
+                else:
+                    errLoc.append((2**n - 1) - i)
+        # print(errLoc)
         for i in errLoc:
-            r[i] ^= 1
+            if int(i/beta) >= length:
+                continue
+            r[int(i/beta)] ^= 1
         return r
-    else:
-        return "Message Corrupted. Request Retransmission"

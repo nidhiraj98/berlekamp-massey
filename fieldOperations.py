@@ -1,6 +1,8 @@
 import math
 
 def inverse(GF, num):       #Compute inverse of a field element
+    if num == 0:
+        return 0
     n = int(math.log2(len(GF) + 1))
     for key, val in GF.items():
         if val == num:
@@ -22,13 +24,12 @@ def fieldMul(GF, a, b):     #Multiply two elements in the field
     p = GF[(alpha_a + alpha_b) % (2**n - 1)]
     return p
 
-def computeSyndrome(GF, r, x):      #Compute the syndrome of a given vector
-    n = int(math.log2(len(GF) + 1))
+def computeSyndrome(GF, n, r, x, beta):      #Compute the syndrome of a given vector
     h = []
-    for i in range(0, 2**n - 1):
-        h.append((x * i) % (2**n - 1))
-    syndrome = 0
     for i in range(0, len(r)):
+        h.append((beta * x * i) % (2**n - 1))
+    syndrome = 0
+    for i in range(0, len(h)):
         if r[i] == 1:
             syndrome = syndrome ^ GF[h[i]]
     return syndrome
