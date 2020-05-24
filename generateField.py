@@ -1,6 +1,6 @@
-GF = {}
-
 def field(n = 4):
+    GF = {}
+    I_GF = {}
     GF[0] = 0b1
     for i in range(1, n):
         # print(i)
@@ -19,4 +19,8 @@ def field(n = 4):
             GF[i] = GF[i - n] ^ GF[i - n + 1] #GF(2^4)
         elif n == 3:
             GF[i] = GF[i - n] ^ GF[i - n + 1] #GF(2^3)
-    return GF
+
+    # for i, gf_val in enumerate(GF):
+    #     I_GF[gf_val] = i
+    I_GF = {v:k for k,v in GF.items()}
+    return GF, I_GF

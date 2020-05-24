@@ -11,8 +11,9 @@ def main():
     k = 19
     field_n = 8
     t = 5
+    beta = int((2**field_n - 1)/n)
 
-    GF = generateField.field(field_n)
+    [GF, I_GF] = generateField.field(field_n)
     image = cv2.imread('testImageColor.png')
     # info = []
     msgBlock = []
@@ -43,10 +44,15 @@ def main():
     rcvMsg = ""
     ext = extBitCount + (extCodeCount * k)
 
+    h = [[] for i in range(0, 2*t)]
+    for i in range(0, 2*t):
+        for j in range(0, n):
+            h[i].append((beta * (i + 1) * j) % (2**field_n - 1))
+
     print("Decoding:")
     for i in tqdm(range(0, len(codewordBlock), n)):
         sentBlock = np.transpose(codewordBlock[i: i + n]).tolist()
-        corrBlock = decoder.receiver(field_n, n, t, GF, sentBlock)
+        corrBlock = decoder.receiver(field_n, n, t, GF, I_GF, h, sentBlock)
 
 
         for i in range(len(corrBlock)):

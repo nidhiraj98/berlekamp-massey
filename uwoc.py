@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import pickle
 
 def main():
-    pT = range(-30, 20)
-    samples = 10 ** 5
+    # pT = range(-30, 20)
+    # samples = 10 ** 5
     # print("31, 11")
     # errRate_1 = uwoc31_11.genErrRate(pT, samples)
     # pickle_it("errRate31_11", errRate_1)
@@ -19,10 +19,10 @@ def main():
     # plt.semilogy(pT, errRate_2, color = 'blue')
 
 
-    print("51, 27")
-    errRate_3 = uwoc51_27.genErrRate(pT, samples)
-    pickle_it("errRate51_27", errRate_3)
-    plt.semilogy(pT, errRate_3, color = 'green')
+    # print("51, 27")
+    # errRate_3 = uwoc51_27.genErrRate(pT, samples)
+    # pickle_it("errRate51_27", errRate_3)
+    # plt.semilogy(pT, errRate_3, color = 'green')
 
     plt.title("BER Analysis for various BCH Codes")
     plt.xlabel("Signal to Noise Ratio")

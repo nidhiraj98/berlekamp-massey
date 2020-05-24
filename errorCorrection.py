@@ -2,27 +2,24 @@ import numpy as np
 import fieldOperations as field
 import generateField
 
-def receiver(n, length, t, GF, rcvBlock):
+def receiver(n, length, t, GF, I_GF, h, rcvBlock):
     rcvBlock = np.transpose(rcvBlock).tolist()
     corrBlock = []
     for r in rcvBlock:
         # print(r)
-        corrBlock.append(berlekamp(n, length, t, GF, r))
+        corrBlock.append(berlekamp(n, length, t, GF, I_GF, h, r))
     return corrBlock
 
 
-def berlekamp(n, length, t, GF, r):
-    # print(n, length)
+def berlekamp(n, length, t, GF, I_GF, h, r):
     beta = int((2**n - 1)/length)
-    # print(beta)
     syndromes = []
     for i in range(1, 2*t + 1):
-        syndromes.append(field.computeSyndrome(GF, n, r, i, beta))
+        syndromes.append(field.computeSyndrome(GF, n, r, h[i - 1], beta))
     
     if syndromes == [0 for _ in range(2 * t)]:
         return r
     d_1 = syndromes[0]
-    # print(syndromes)
 
     errLocTable = {
         'mu': [-0.5] + [i for i in range(0, t + 1)],
@@ -40,10 +37,10 @@ def berlekamp(n, length, t, GF, r):
         else:
             p = errLocTable['mu'][errLocTable['diff'].index(max(errLocTable['diff'][:i - 1]))]
             d_u = errLocTable['d'][i - 1]
-            d_p_inv = field.inverse(GF, errLocTable['d'][errLocTable['mu'].index(p)])
+            d_p_inv = field.inverse(GF, I_GF, errLocTable['d'][errLocTable['mu'].index(p)])
             sigma_p = errLocTable['sigma'][errLocTable['mu'].index(p)]
-            const = field.fieldMul(GF, d_u, d_p_inv)
-            big_term = [field.fieldMul(GF, const, s) for s in sigma_p] + [0 for _ in range(int(2 * (mu - p)))]
+            const = field.fieldMul(GF, I_GF, d_u, d_p_inv)
+            big_term = [field.fieldMul(GF, I_GF, const, s) for s in sigma_p] + [0 for _ in range(int(2 * (mu - p)))]
             sigma_u = errLocTable['sigma'][i - 1]
             x = len(big_term) - len(sigma_u)
             sigma_u = [0 for _ in range(x)] + sigma_u
@@ -61,7 +58,7 @@ def berlekamp(n, length, t, GF, r):
         d = syndromes[2 * mu + 3 - 1] #initialize d
         for j in range(1, l + 1):   #compute d
             syn = syndromes[2 * mu + 3 - 1 - j]
-            curr = field.fieldMul(GF, syn, sigma[l - j])
+            curr = field.fieldMul(GF,I_GF,  syn, sigma[l - j])
             d ^= curr
         errLocTable['d'].append(d)
 
@@ -74,7 +71,7 @@ def berlekamp(n, length, t, GF, r):
         for i in range(0, 2**n - 1):
             sum = 0
             for j in range(0, len(errLocPoly)):
-                sum ^= field.fieldMul(GF, errLocPoly[j], GF[(i * j) % (2**n - 1)])
+                sum ^= field.fieldMul(GF, I_GF, errLocPoly[j], GF[(i * j) % (2**n - 1)])
             if sum == 0:
                 if i == 0:
                     errLoc.append(1)

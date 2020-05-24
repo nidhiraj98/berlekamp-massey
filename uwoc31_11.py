@@ -12,7 +12,8 @@ def genErrRate(pT, samples):
     k = 11
     field_n = 5
     t = 5
-    GF = generateField.field(field_n)
+    beta = int((2**field_n - 1)/n)
+    [GF, I_GF] = generateField.field(field_n)
 
     rB = 500 * (10**6)
     tB = 1 / rB
@@ -26,6 +27,12 @@ def genErrRate(pT, samples):
     muX = -(sigmaX **  2)
     eta = 0.15
     errRate = []
+
+    h = [[] for i in range(0, 2*t)]
+    for i in range(0, 2*t):
+        for j in range(0, n):
+            h[i].append((beta * (i + 1) * j) % (2**field_n - 1))
+
     for power in pT:
         print("Power = ", power)
         error = 0
@@ -47,7 +54,7 @@ def genErrRate(pT, samples):
                         x1 = const[i]
                 codewordChannel.append(x1)
             # print(codewordChannel)
-            decoded = errorCorrection.berlekamp(field_n, n, t, GF, codewordChannel)
+            decoded = errorCorrection.berlekamp(field_n, n, t, GF, I_GF, h, codewordChannel)
             # print(decoded)
             msgEst = decoded[n - k: ]
             # print(msgEst)

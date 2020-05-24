@@ -1,21 +1,21 @@
 import encoder
 import numpy as np
-import errorCorrectionPrimitive as decoder
+import errorCorrection as decoder
 import generateField
 import random
 
 def main():
     n = 51
-    k = 19
+    k = 27
     field_n = 8
     t = 5
-    # print(a)
+    beta = int((2**field_n - 1)/n)
     msg = input("Enter Message:")
     info = []
     msgBlock = []
     codewordBlock = []
 
-    GF = generateField.field(field_n)
+    [GF, I_GF] = generateField.field(field_n)
     for i in range(0, len(msg)):
         x = list(bin(ord(msg[i]))[2:])
         while len(x) < 7:
@@ -24,25 +24,30 @@ def main():
     
     while len(info) % k != 0:
         info = info + [0]
-    # info = [random.randrange(2) for _ in range(k)]
-    # print(info)
+
     
     for i in range(0, len(info), k):
         msgBlock.append(info[i: i+k])
  
     for m in msgBlock:
-        codewordBlock.append(encoder.encoder_51_19(m))
-    # print(codewordBlock)
+        codewordBlock.append(encoder.encoder_51_27(m))
 
     while len(codewordBlock) % n != 0:
         codewordBlock.append([0 for _ in range(n)])
         
     blockCount = int(len(codewordBlock) / n)
 
+
+    h = [[] for i in range(0, 2*t)]
+    for i in range(0, 2*t):
+        for j in range(0, n):
+            h[i].append((beta * (i + 1) * j) % (2**field_n - 1))
+    # print(h)
+
+
     for i in range(blockCount):
         sentBlock = np.transpose(codewordBlock[0: n]).tolist()
-        corrBlock = decoder.receiver(field_n, n, t, GF,sentBlock)
-        # print(corrBlock[0])
+        corrBlock = decoder.receiver(field_n, n, t, GF, I_GF, h, sentBlock)
         
         rcvMsg = []
         for i in range(len(corrBlock)):
