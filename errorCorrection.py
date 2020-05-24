@@ -12,11 +12,15 @@ def receiver(n, length, t, GF, rcvBlock):
 
 
 def berlekamp(n, length, t, GF, r):
+    # print(n, length)
     beta = int((2**n - 1)/length)
+    # print(beta)
     syndromes = []
     for i in range(1, 2*t + 1):
         syndromes.append(field.computeSyndrome(GF, n, r, i, beta))
     
+    if syndromes == [0 for _ in range(2 * t)]:
+        return r
     d_1 = syndromes[0]
     # print(syndromes)
 

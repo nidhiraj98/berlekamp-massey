@@ -7,16 +7,16 @@ import pickle
 def main():
     pT = range(-30, 20)
     samples = 10 ** 5
-    print("31, 11")
+    # print("31, 11")
     # errRate_1 = uwoc31_11.genErrRate(pT, samples)
     # pickle_it("errRate31_11", errRate_1)
-    errRate_1 = unpickle_it("errRate31_11")
-    plt.semilogy(pT, errRate_1, color = 'red')
+    # errRate_1 = unpickle_it("errRate31_11")
+    # plt.semilogy(pT, errRate_1, color = 'red')
 
-    print("51, 19")
-    errRate_2 = uwoc51_19.genErrRate(pT, samples)
-    pickle_it("errRate51_19", errRate_2)
-    plt.semilogy(pT, errRate_2, color = 'blue')
+    # print("51, 19")
+    # errRate_2 = uwoc51_19.genErrRate(pT, samples)
+    # pickle_it("errRate51_19", errRate_2)
+    # plt.semilogy(pT, errRate_2, color = 'blue')
 
 
     print("51, 27")
