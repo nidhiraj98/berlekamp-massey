@@ -5,12 +5,16 @@ import generateField
 import random
 
 def main():
-    n = 51
-    k = 27
-    field_n = 8
+    n = 31
+    k = 11
+    field_n = 5
     t = 5
     beta = int((2**field_n - 1)/n)
-    msg = input("Enter Message:")
+    f = open("testText.txt", "r")
+    msg = f.readline()
+    f.close()
+    print("Message:\n", msg)
+    print("Total Number of Characters: ", len(msg))
     info = []
     msgBlock = []
     codewordBlock = []
@@ -30,13 +34,10 @@ def main():
         msgBlock.append(info[i: i+k])
  
     for m in msgBlock:
-        codewordBlock.append(encoder.encoder_51_27(m))
+        codewordBlock.append(encoder.encoder_31_11(m))
 
     while len(codewordBlock) % n != 0:
         codewordBlock.append([0 for _ in range(n)])
-        
-    blockCount = int(len(codewordBlock) / n)
-
 
     h = [[] for i in range(0, 2*t)]
     for i in range(0, 2*t):
@@ -44,24 +45,27 @@ def main():
             h[i].append((beta * (i + 1) * j) % (2**field_n - 1))
     # print(h)
 
+    print("Total Number of Encoded Blocks: ", int(len(codewordBlock)/n))
+    print("Encoding Type: ", n, k)
+    rcvMsg = []
 
-    for i in range(blockCount):
-        sentBlock = np.transpose(codewordBlock[0: n]).tolist()
+    for i in range(0, len(codewordBlock), n):
+        sentBlock = np.transpose(codewordBlock[i: i + n]).tolist()
         corrBlock = decoder.receiver(field_n, n, t, GF, I_GF, h, sentBlock)
         
-        rcvMsg = []
-        for i in range(len(corrBlock)):
-            rcvMsg = rcvMsg + corrBlock[i][n - k: ]
+        for j in range(len(corrBlock)):
+            rcvMsg = rcvMsg + corrBlock[j][n - k: ]
 
-        msgStr = ""
-        zeros = [0 for _ in range(7)]
-        for i in range(0, len(rcvMsg), 7):
-            x = rcvMsg[i: i + 7]
-            if x == zeros:
-                break
-            x = [str(m) for m in x]
-            msgStr = msgStr + chr(int("".join(x), 2))
-        print(msgStr)
+    msgStr = ""
+    zeros = [0 for _ in range(7)]
+    for j in range(0, len(rcvMsg), 7):
+        x = rcvMsg[j: j + 7]
+        if x == zeros:
+            break
+        x = [str(m) for m in x]
+        msgStr = msgStr + chr(int("".join(x), 2))
+    print("\nMessage Received:\n", msgStr)
+    
             
 
 if __name__ == "__main__":

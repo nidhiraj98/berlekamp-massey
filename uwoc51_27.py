@@ -65,6 +65,6 @@ def genErrRate(pT, samples):
     return errRate
 
 # print(genErrRate(range(0, 1), 10**2))
-rate  = genErrRate(range(-30, 20), 10**5)
-plt.semilogy(range(-30, 20), rate)
-plt.show()
+# rate  = genErrRate(range(-30, 20), 10**5)
+# plt.semilogy(range(-30, 20), rate)
+# plt.show()
