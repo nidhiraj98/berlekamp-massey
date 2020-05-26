@@ -22,6 +22,7 @@ def main():
     [GF, I_GF] = generateField.field(field_n)
     for i in range(0, len(msg)):
         x = list(bin(ord(msg[i]))[2:])
+        # print(x, msg[i])
         while len(x) < 7:
             x = ['0'] + x
         info = info + [int(s) for s in x]
