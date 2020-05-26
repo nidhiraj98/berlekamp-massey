@@ -15,7 +15,7 @@ def main():
 
     [GF, I_GF] = generateField.field(field_n)
     image = cv2.imread('testImageColor.png')
-    # info = []
+    cv2.imshow("img", image)
     msgBlock = []
     codewordBlock = []
     extBitCount = 0
