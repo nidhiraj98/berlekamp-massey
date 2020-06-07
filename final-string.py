@@ -1,7 +1,7 @@
 import encoder
 import numpy as np
 import errorCorrection as decoder
-import generateField
+from galoisField import generateField
 import random
 
 def main():
@@ -10,7 +10,7 @@ def main():
     field_n = 5
     t = 5
     beta = int((2**field_n - 1)/n)
-    f = open("testText.txt", "r")
+    f = open("./test/testText.txt", "r")
     msg = f.readline()
     f.close()
     print("Message:\n", msg)

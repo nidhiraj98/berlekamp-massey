@@ -1,6 +1,6 @@
 import encoder
 import errorCorrection
-import generateField
+from galoisField import generateField
 import random
 import math
 import numpy as np

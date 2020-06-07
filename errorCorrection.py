@@ -1,6 +1,5 @@
 import numpy as np
-import fieldOperations as field
-import generateField
+from galoisField import fieldOperations as field
 
 def receiver(n, length, t, GF, I_GF, h, rcvBlock):
     rcvBlock = np.transpose(rcvBlock).tolist()

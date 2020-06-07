@@ -2,7 +2,7 @@ import encoder
 import numpy as np
 import imgConversion as img
 import errorCorrection as decoder
-import generateField
+from galoisField import generateField
 from tqdm import tqdm
 import cv2
 
@@ -14,7 +14,7 @@ def main():
     beta = int((2**field_n - 1)/n)
 
     [GF, I_GF] = generateField.field(field_n)
-    image = cv2.imread('testImageColor.png')
+    image = cv2.imread('./test/testImageColor.png')
     cv2.imshow("img", image)
     msgBlock = []
     codewordBlock = []
