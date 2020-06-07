@@ -1,16 +1,23 @@
 import uwoc31_11
 import uwoc51_19
 import uwoc51_27
+import uwocUncoded
 import matplotlib.pyplot as plt
 import pickle
 
 def main():
     pT = range(-30, 20)
-    samples = 10 ** 5
-    # print("31, 11")
-    # errRate_1 = uwoc31_11.genErrRate(pT, samples)
-    # pickle_it("errRate31_11", errRate_1)
-    errRate_1 = unpickle_it("errRate31_11")
+    samples = 10 ** 6
+    print("Uncoded")
+    # errRateUncoded = uwocUncoded.genErrRate(pT, samples)
+    # pickle_it("errRateUncoded", errRateUncoded)
+    errRateUncoded = unpickle_it("errRateUncoded")
+    plt.semilogy(pT, errRateUncoded, color = "black")
+
+    print("31, 11")
+    errRate_1 = uwoc31_11.genErrRate(pT, samples)
+    pickle_it("errRate31_11", errRate_1)
+    # errRate_1 = unpickle_it("errRate31_11")
     plt.semilogy(pT, errRate_1, color = 'red')
 
     print("51, 19")
@@ -27,7 +34,7 @@ def main():
     plt.title("BER Analysis for various BCH Codes")
     plt.xlabel("Signal to Noise Ratio")
     plt.ylabel("Bit Error Rate")
-    plt.legend(['(31, 11) BCH Code', '(51, 19) BCH Code', '(51, 27) BCH Code'])
+    plt.legend(['Uncoded', '(31, 11) BCH Code', '(51, 19) BCH Code', '(51, 27) BCH Code'])
     plt.show()
 
 def pickle_it(file_name,  data):

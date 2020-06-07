@@ -8,12 +8,7 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 
 def genErrRate(pT, samples):
-    n = 31
-    k = 11
-    field_n = 5
-    t = 5
-    beta = int((2**field_n - 1)/n)
-    [GF, I_GF] = generateField.field(field_n)
+    k = 19
 
     rB = 500 * (10**6)
     tB = 1 / rB
@@ -28,11 +23,6 @@ def genErrRate(pT, samples):
     eta = 0.15
     errRate = []
 
-    h = [[] for i in range(0, 2*t)]
-    for i in range(0, 2*t):
-        for j in range(0, n):
-            h[i].append((beta * (i + 1) * j) % (2**field_n - 1))
-
     for power in pT:
         # print("Encoding Type: ", n, k)
         print("Power: ", power)
@@ -40,7 +30,7 @@ def genErrRate(pT, samples):
         for sample in tqdm(range(1, samples)):
             msg = [random.randrange(2) for _ in range(k)]
             # print("Message vector:                  ", msg)
-            codeword = encoder.encoder_31_11(msg)
+            codeword = msg
             # print("Codeword generated:              ", codeword)
             codewordChannel = []
             for code in codeword:
@@ -56,15 +46,16 @@ def genErrRate(pT, samples):
                         x1 = const[i]
                 codewordChannel.append(x1)
             # print("Received vector after channel:   ",codewordChannel)
-            decoded = errorCorrection.berlekamp(field_n, n, t, GF, I_GF, h, codewordChannel)
             # print("Codeword after error correction: ",decoded)
-            msgEst = decoded[n - k: ]
+            msgEst = codewordChannel
             # print("Decoded Message:                 ",msgEst)
             errPat = np.bitwise_xor(msg, msgEst)
             error += sum(errPat)
-            # print()
         errRate.append(error / (k * sample))
     return errRate
-# genErrRate(range(-16, -13), 2)
+
+# genErrRate(range(-30, 20), 10**4)
+# print(genErrRate(range(0, 1), 10**2))
+# rate  = genErrRate(range(-30, 20), 10**4)
 # plt.semilogy(range(-30, 20), rate)
 # plt.show()

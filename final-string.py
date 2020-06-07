@@ -3,10 +3,8 @@ import numpy as np
 import errorCorrection as decoder
 import generateField
 import random
-import time
 
 def main():
-    start_time = time.time()
     n = 31
     k = 11
     field_n = 5
@@ -68,7 +66,7 @@ def main():
         x = [str(m) for m in x]
         msgStr = msgStr + chr(int("".join(x), 2))
     print("\nMessage Received:\n", msgStr)
-    print("Execution Time: ", time.time() - start_time, "s")
+    
             
 
 if __name__ == "__main__":
